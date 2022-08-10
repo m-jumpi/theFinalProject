@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}ActiveDirectoryCource{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Active Directory Protection & Tiering</h1>
+</div>
+<main>
+    <section id="description-section">
+        <article class="cource-description cource-modiles">
+            <h5>About this cource</h5>
+            <p>
+                This on-demand course is intended for IT and security professionals who want to
+                understand the most common attack vectors and security pitfolds in Active Directory
+                such as Kerberoast, kerberos delegation, credential caching and others. We will discuss
+                the best practice recommendations to design a new Active Directory or protect an existing
+                one against security threats. The course focuses on the most abused escalation misconfiguration
+                and the tools available to discover them, the Active Directory Tiering model, Privileged Access
+                Workstations, ESAE forests, and different password policies based on account categorization and
+                others.
+            </p>
+
+            <div class="cource-modiles">
+                <h5>This course is composed by the following modules</h5>
+                <ul>
+                    <li class="module">Module 1</li>
+                    <ul>
+                        <li>Introduction</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 2</li>
+                    <ul>
+                        <li>Overview of AD Attacks & Tools</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 3</li>
+                    <ul>
+                        <li>Attacks</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 4</li>
+                    <ul>
+                        <li>Tools</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 5</li>
+                    <ul>
+                        <li>AD Tiering</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 6</li>
+                    <ul>
+                        <li>Passwords</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 7</li>
+                    <ul>
+                        <li>AD Features</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 8</li>
+                    <ul>
+                        <li>Hardening</li>
+                    </ul>
+                    </br>
+                    <li class="module">Module 9</li>
+                    <ul>
+                        <li>Conclusion</li>
+                    </ul>
+                </ul>
+            </div>
+            <input class="SubmitFeedbackBtn" type="submit" value="Submit">
+        </article>
+        <article class="cource-description author cource-modiles">
+            <div class="author-image" style="background: url(./static/author1.jpeg);"></div>
+            <h5>Ivanov Ivan</h5>
+            <h5>Instructor for this cource</h5>
+            <p>
+                Ivan has specialized in both offensive and defensive security. On the offensive side, he has
+                performed numerous Red Team engagements and penetration tests, targeting both Active Directory, web
+                and network infrastructures, and applications. Ivan has also been part of multiple full TIBER-DK
+                engagements executed in Denmark. On the defensive side, he has specialized in improving Cyber
+                Security maturity and resilience against modern attacks in Active Directory and related Windows
+                infrastructure.
+            <p>
+                His previous roles include Senior Consultant, where he handled Digital Forensics and Incident
+                Response, Vulnerability Management, IP Theft Investigations, and more. He later transitioned to
+                Senior IT Security Researcher where he focused on developing Information Security courses. This role
+                was followed by working as a Security Advisor where he handled Network Security, SecOps Management,
+                Web Application Security, Critical Security Controls, and more.
+            </p>
+            <p>
+                Certifications: eCTHP, eCPTX, OSCE, OSCP, GCFA, AZ-500, Microsoft INF260x
+            </p>
+            </p>
+        </article>
+    </section>
+</main>
+{{ wtf.quick_form(form) }}
+{% endblock %}

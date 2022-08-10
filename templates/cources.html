@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Cources{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>List of Cources</h1>
+</div>
+<main>
+    <section class="cource-section">
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img1.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="/ActiveDirectoryCource">Active Directory Protection & Tiering</a>
+            </div>
+            <p>
+                This on-demand course is intended for IT and security professionals
+                who want to understand the most common attack vectors and security
+                pitfolds in Active Directory such as Kerberoast, kerberos delegation,
+                credential caching and others.
+            </p>
+        </article>
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img2.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="#">Advanced Implementation and Optimization with Border Gateway
+                    Protocol</a>
+
+            </div>
+            <p>
+                This course covers understanding, optimizing and configuring BGP. In
+                this course, you will learn about different BGP Path attributes as well
+                as how to do path manipulation in BGP using attributes like...
+            </p>
+        </article>
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img3.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="#">Advanced Network Automation with Python</a>
+
+            </div>
+            <p>
+                This course covers advanced Python scripting required for Network automation and
+                managing network devices. In this course, you will learn about taking backups
+                of network devices using Netmiko, Built-in function, Built-in input function,
+                SysArgv, Argparse, matching RAW data using Regex, Parsing Data using Regex,
+                and TextFSM. Students who want to deepen their understanding of Network Automation
+                using Python3 will benefit from this course
+            </p>
+        </article>
+    </section>
+    <section class="cource-section">
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img4.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="#">AWS Cloud Architect Bootcamp</a>
+            </div>
+            <p>
+                Join us for this 12 Week AWS Cloud Architect Bootcamp and prepare for the AWS Solutions Architect
+                Associate certification by BUILDING 54 PROJECTS.
+            </p>
+        </article>
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img5.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="#">AWS Management Concepts</a>
+            </div>
+            <p>
+                Understanding AWS is more than just services. It's also about best practices when it comes to billing,
+                architectures, monitoring, and so on. This course will cover the fundamentals needed to become effective
+                in those areas. We will look at support plans, cost and billing, as well as the Well-Architected
+                framework. When completed, you will have a solid foundation to begin building, monitoring, and
+                controlling costs in AWS.
+            </p>
+        </article>
+        <article class="cource">
+            <div class="article-image" style="background: url(./static/img6.jpg);"></div>
+            <div class="cource-header">
+                <a class="cource-href" href="#">AWS Security & Compliance</a>
+
+            </div>
+            <p>
+                AWS is not only a game-changer for companies looking to innovate faster. AWS Cloud also helps you
+                significantly improve your security and compliance practice in ways that would be difficult or
+                financially impossible for most organizations outside AWS. This course gives you the fundamentals for
+                understanding security and compliance in the AWS Cloud. You will review the basics of security using
+                IAM, including entities and evaluation of policy statements. The essential services you can use to
+                improve security and compliance, including those using AI/ML, are also covered.
+            </p>
+        </article>
+    </section>
+</main>
+{% endblock %}
