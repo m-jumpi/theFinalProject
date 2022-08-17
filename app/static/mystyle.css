@@ -34,7 +34,7 @@ article.about {
     color: white;
 }
 
-p {
+main>section>article>p {
     font-family: 'Cormorant Garamond';
     text-align: left;
     font-weight: 300;
@@ -114,8 +114,8 @@ article img {
     background-position: center !important;
 }
 
-#description-section {
-    width: 1000px;
+.description-section {
+    width: 100%;
     margin: auto;
     margin-top: 50px;
     vertical-align: top;
@@ -123,13 +123,13 @@ article img {
 
 article.cource-description {
     vertical-align: top;
-    max-width: 45%;
+    max-width: 48%;
     display: inline-block;
     border: 5px solid #e1e0c3;
     padding: 10px;
     margin: 5px;
     background-color: black;
-    height: 1100px;
+    height: 1050px;
     text-align: center;
     border-radius: 10px;
 }
@@ -169,4 +169,43 @@ li.module {
 
 .SubmitFeedbackBtn:hover {
     font-weight: 600;
+}
+
+.footer {
+    margin: 40px;
+}
+
+.profile-thumbnail {
+    position: absolute;
+}
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+
+ul.posts {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+    border-top: 1px solid #e0e0e0;
+}
+ul.posts li.post {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.posts li.post:hover {
+    background-color: #f0f0f0;
+}
+div.post-date {
+    float: right;
+}
+div.post-author {
+    font-weight: bold;
+}
+div.post-thumbnail {
+    position: absolute;
+}
+div.post-content {
+    margin-left: 48px;
+    min-height: 48px;
 }

@@ -1,0 +1,11 @@
+Dear {{ order.firstname }},
+
+You have successfully registered for the course {{ order.coursename }}
+
+We will contact you shortly to confirm.
+
+Sincerely,
+
+The L|T|S Team
+
+Note: replies to this email address are not monitored.

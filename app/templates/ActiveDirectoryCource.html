@@ -7,8 +7,8 @@
 <div class="page-header">
     <h1>Active Directory Protection & Tiering</h1>
 </div>
-<main>
-    <section id="description-section">
+<main class="col text-center">
+    <section class="description-section">
         <article class="cource-description cource-modiles">
             <h5>About this cource</h5>
             <p>
@@ -71,7 +71,6 @@
                     </ul>
                 </ul>
             </div>
-            <input class="SubmitFeedbackBtn" type="submit" value="Submit">
         </article>
         <article class="cource-description author cource-modiles">
             <div class="author-image" style="background: url(./static/author1.jpeg);"></div>
@@ -96,7 +95,11 @@
             </p>
             </p>
         </article>
+
     </section>
 </main>
-{{ wtf.quick_form(form) }}
+<div  class="col text-center">
+    {{ wtf.quick_form(form) }}
+</div>
+
 {% endblock %}
