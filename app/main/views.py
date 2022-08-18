@@ -9,6 +9,7 @@ from ..email import send_email
 from ..decorators import admin_required, permission_required
 from flask import current_app
 
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     # form = NameForm()
@@ -46,9 +47,6 @@ def index():
     #                        # known=session.get('known', False),
     #                        current_time=datetime.utcnow())
     # return render_template('index.html', form=form, posts=posts, current_time=datetime.utcnow())
-
-
-
 
 
 @main.route('/cources')
@@ -170,6 +168,30 @@ def edit_profile_admin(id):
     form.location.data = user.location
     form.about_me.data = user.about_me
     return render_template('edit_profile.html', form=form, user=user)
+
+
+@main.route('/post/<int:id>')
+def post(id):
+    post = Post.query.get_or_404(id)
+    return render_template('post.html', posts=[post])
+
+
+@main.route('/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit(id):
+    post = Post.query.get_or_404(id)
+    if current_user != post.author and \
+            not current_user.can(Permission.ADMIN):
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.body = form.body.data
+        db.session.add(post)
+        db.session.commit()
+        flash('The post has been updated.')
+        return redirect(url_for('.post', id=post.id))
+    form.body.data = post.body
+    return render_template('edit_post.html', form=form)
 
 
 @main.route('/admin')

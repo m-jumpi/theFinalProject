@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, SelectField, TextAreaField, widget
 from wtforms.validators import DataRequired, Length, Email, Regexp
 from ..models import Course, User, Role
 from wtforms_sqlalchemy.fields import QuerySelectField
-
+from flask_pagedown.fields import PageDownField
 
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
@@ -102,5 +102,5 @@ class EditProfileAdminForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    body = TextAreaField("What do you think about our learning platform?", validators=[DataRequired()])
+    body = PageDownField("What do you think about our learning platform?", validators=[DataRequired()])
     submit = SubmitField('Submit')
