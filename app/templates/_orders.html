@@ -1,0 +1,11 @@
+<ul class="posts">
+    {% for order in orders %}
+    <li class="post">
+        <div class="post-content">
+            <div class="post-date">Waiting for approval</div>
+            <div class="post-body">
+                <p>{{order.course_order.coursename}}</p>
+            </div>
+    </li>
+    {% endfor %}
+</ul>

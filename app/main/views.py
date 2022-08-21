@@ -51,6 +51,7 @@ def index():
 
 @main.route('/cources')
 def cources():
+    # courses = Course.query.order_by().all()
     return render_template('cources.html')
 
 
@@ -121,7 +122,10 @@ def user(username):
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('user.html', user=user, posts=posts, pagination=pagination)
+
+    orders = Order.query.order_by().all()
+
+    return render_template('user.html', user=user, posts=posts, pagination=pagination, orders=orders)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
@@ -253,7 +257,7 @@ def followed_by(username):
         page, per_page=current_app.config['FLASKY_FOLLOWERS_PER_PAGE'],
         error_out=False)
     followed = [{'user': item.followed, 'timestamp': item.timestamp}
-               for item in pagination.items]
+                for item in pagination.items]
     return render_template('followers.html', user=user, title="Followed by",
                            endpoint='.followed_by', pagination=pagination,
                            follows=followed)
