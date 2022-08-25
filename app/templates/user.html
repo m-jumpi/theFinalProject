@@ -67,6 +67,42 @@
 <h3>Enrolled courses by {{ user.username }}</h3>
 {% include '_orders.html' %}
 
+
+{% if current_user.is_administrator() and user == current_user%}
+<h3>Waiting for approval</h3>
+<ul class="posts">
+    {% for order in orders %}
+    {% if not order.approved %}
+    <li class="post">
+        <div class="profile-thumbnail">
+            <a href="{{ url_for('.user', username=order.user_order.username) }}">
+                <img class="img-rounded profile-thumbnail"
+                     src="{{ order.user_order.gravatar(size=40) }}">
+            </a>
+        </div>
+        <div class="post-content">
+            <div class="post-author">
+                <a href="{{ url_for('.user', username=order.user_order.username) }}">
+                    {{ order.user_order.username }}
+                </a>
+            </div>
+            <div class="post-body">
+                <p>{{order.course_order.coursename}}</p>
+            </div>
+        </div>
+        <div class="post-footer">
+            <a class="btn btn-success" href="{{ url_for('.approve_order', id=order.id) }}">
+                Approve
+            </a>
+        </div>
+    </li>
+    {% endif %}
+    {% endfor %}
+</ul>
+
+{% endif %}
+
+
 <h3>Posts by {{ user.username }}</h3>
 {% include '_posts.html' %}
 <div class="pagination">

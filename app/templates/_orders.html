@@ -1,11 +1,34 @@
 <ul class="posts">
+
     {% for order in orders %}
+    {% if user.id==order.user_id and (user.username==current_user.username or current_user.is_administrator())%}
     <li class="post">
+        <div class="profile-thumbnail">
+            <a href="{{ url_for('.user', username=order.user_order.username) }}">
+                <img class="img-rounded profile-thumbnail"
+                     src="{{ order.user_order.gravatar(size=40) }}">
+            </a>
+        </div>
         <div class="post-content">
+            {% if not order.approved %}
             <div class="post-date">Waiting for approval</div>
-            <div class="post-body">
-                <p>{{order.course_order.coursename}}</p>
+            {% endif %}
+            <div class="post-author">
+                <a href="{{ url_for('.user', username=order.user_order.username) }}">
+                    {{ order.user_order.username }}
+                </a>
             </div>
+            <div class="post-body">
+                {% if not order.approved %}
+                <p>{{order.course_order.coursename}}</p>
+                {% elif order.approved %}
+                <a href="{{ url_for('.enrolled_course', id=order.id) }}">
+                    {{order.course_order.coursename}}
+                </a>
+                {% endif %}
+            </div>
+        </div>
     </li>
+    {% endif %}
     {% endfor %}
 </ul>

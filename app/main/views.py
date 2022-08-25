@@ -1,9 +1,10 @@
 from datetime import datetime
-from flask import render_template, session, redirect, url_for, flash, abort, request
+from flask import render_template, session, redirect, url_for, flash, abort, request, make_response
 from . import main
-from .forms import NameForm, FeedbackForm, SibmitForm, SignUpForm, EditProfileForm, EditProfileAdminForm, PostForm
+from .forms import NameForm, FeedbackForm, SibmitForm, SignUpForm, EditProfileForm, EditProfileAdminForm, PostForm, \
+    ApproveOrder, CommentForm
 from .. import db
-from ..models import User, Order, Course, Permission, Role, Post
+from ..models import User, Order, Course, Permission, Role, Post, Comment
 from flask_login import login_required, current_user
 from ..email import send_email
 from ..decorators import admin_required, permission_required
@@ -35,18 +36,42 @@ def index():
     # posts = Post.query.order_by(Post.timestamp.desc()).all()
 
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+    # pagination = Post.query.order_by(Post.timestamp.desc()).paginate(
+    #     page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
+    #     error_out=False)
+    # posts = pagination.items
+    # return render_template('index.html', form=form, posts=posts,
+    #                        pagination=pagination, current_time=datetime.utcnow())
+
+    show_followed = False
+    if current_user.is_authenticated:
+        show_followed = bool(request.cookies.get('show_followed', ''))
+    if show_followed:
+        query = current_user.followed_posts
+    else:
+        query = Post.query
+    pagination = query.order_by(Post.timestamp.desc()).paginate(
         page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
     return render_template('index.html', form=form, posts=posts,
-                           pagination=pagination, current_time=datetime.utcnow())
+                           show_followed=show_followed, pagination=pagination, current_time=datetime.utcnow())
 
-    # return render_template('index.html',
-    #                        # form=form, name=session.get('name'),
-    #                        # known=session.get('known', False),
-    #                        current_time=datetime.utcnow())
-    # return render_template('index.html', form=form, posts=posts, current_time=datetime.utcnow())
+
+@main.route('/all')
+@login_required
+def show_all():
+    resp = make_response(redirect(url_for('.index')))
+    resp.set_cookie('show_followed', '', max_age=30 * 24 * 60 * 60)  # 30 days
+    return resp
+
+
+@main.route('/followed')
+@login_required
+def show_followed():
+    resp = make_response(redirect(url_for('.index')))
+    resp.set_cookie('show_followed', '1', max_age=30 * 24 * 60 * 60)  # 30 days
+    return resp
 
 
 @main.route('/cources')
@@ -174,10 +199,28 @@ def edit_profile_admin(id):
     return render_template('edit_profile.html', form=form, user=user)
 
 
-@main.route('/post/<int:id>')
+@main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
-    return render_template('post.html', posts=[post])
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(body=form.body.data,
+                          post=post,
+                          author=current_user._get_current_object())
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been published.')
+        return redirect(url_for('.post', id=post.id, page=-1))
+    page = request.args.get('page', 1, type=int)
+    if page == -1:
+        page = (post.comments.count() - 1) // \
+               current_app.config['FLASKY_COMMENTS_PER_PAGE'] + 1
+    pagination = post.comments.order_by(Comment.timestamp.asc()).paginate(
+        page, per_page=current_app.config['FLASKY_COMMENTS_PER_PAGE'],
+        error_out=False)
+    comments = pagination.items
+    return render_template('post.html', posts=[post], form=form,
+                           comments=comments, pagination=pagination)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -261,6 +304,42 @@ def followed_by(username):
     return render_template('followers.html', user=user, title="Followed by",
                            endpoint='.followed_by', pagination=pagination,
                            follows=followed)
+
+
+@main.route('/approve_order/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def approve_order(id):
+    order = Order.query.get_or_404(id)
+    form = ApproveOrder(order=order)
+    if form.validate_on_submit():
+        order.firstname = form.firstName.data
+        order.lastname = form.lastName.data
+        order.approved = form.approved.data
+        order.course_order = Course.query.get(form.courseName.data)
+        order.mobile = form.mobile.data
+        order.payment = form.payment.data
+        db.session.add(order)
+        db.session.commit()
+        if form.approved.data:
+            flash('The order has been approved.')
+        return redirect(url_for('.user', username=current_user.username))
+    form.firstName.data = order.firstname
+    form.lastName.data = order.lastname
+    form.approved.data = order.approved
+    form.courseName.data = order.course_id
+    form.mobile.data = order.mobile
+    form.payment.data = order.payment
+    return render_template('approve_order.html', form=form, order=order)
+
+
+@main.route('/enrolled_course/<int:id>', methods=['GET', 'POST'])
+@login_required
+def enrolled_course(id):
+    order = Order.query.get_or_404(id)
+    if (current_user.id == order.user_id and order.approved):
+        return render_template('enrolled_course.html', order=order)
+    abort(404)
 
 
 @main.route('/admin')

@@ -5,6 +5,7 @@ from ..models import Course, User, Role
 from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_pagedown.fields import PageDownField
 
+
 class NameForm(FlaskForm):
     name = StringField('What is your name?', validators=[DataRequired()])
     submit = SubmitField('Submit')
@@ -48,7 +49,7 @@ class SignUpForm(FlaskForm):
     #                                                  Email()])
     # courseName = SelectField()
     # courseName = QuerySelectField(query_factory=courses_query, get_label='coursename')
-    courseName=SelectField('Course Name', coerce=int)
+    courseName = SelectField('Course Name', coerce=int)
     mobile = StringField('Mobile', validators=[DataRequired(),
                                                Length(1, 12),
                                                Regexp('^[+]\d{11}$', 0,
@@ -59,7 +60,7 @@ class SignUpForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
         self.courseName.choices = [(course.id, course.coursename)
-                             for course in Course.query.order_by(Course.coursename).all()]
+                                   for course in Course.query.order_by(Course.coursename).all()]
 
 
 class EditProfileForm(FlaskForm):
@@ -101,6 +102,29 @@ class EditProfileAdminForm(FlaskForm):
             raise ValidationError('Username already in use.')
 
 
+class ApproveOrder(FlaskForm):
+    firstName = StringField('First Name', validators=[DataRequired()])
+    lastName = StringField('Last Name', validators=[DataRequired()])
+    courseName = SelectField('Course Name', coerce=int)
+    approved = BooleanField('Approved')
+    mobile = StringField('Mobile', validators=[DataRequired(),
+                                               Length(1, 12),
+                                               Regexp('^[+]\d{11}$', 0,
+                                                      'Mobile phone number must have only numbers and must be 11 numbers long')])
+    payment = SelectField('Payment Method', choices=['Cash', 'Card'])
+    submit = SubmitField('Submit')
+
+    def __init__(self, *args, **kwargs):
+        super(ApproveOrder, self).__init__(*args, **kwargs)
+        self.courseName.choices = [(course.id, course.coursename)
+                                   for course in Course.query.order_by(Course.coursename).all()]
+
+
 class PostForm(FlaskForm):
     body = PageDownField("What do you think about our learning platform?", validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+
+class CommentForm(FlaskForm):
+    body = StringField('', validators=[DataRequired()])
     submit = SubmitField('Submit')
