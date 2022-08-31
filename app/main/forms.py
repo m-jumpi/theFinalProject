@@ -34,12 +34,12 @@ class FeedbackForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
-        self.courseName.choices = [(courseName.id, courseName.coursename)
-                                   for courseName in Course.query.order_by(Course.coursename).all()]
+        self.courseName.choices = [(courseName.id, courseName.title)
+                                   for courseName in Course.query.order_by(Course.title).all()]
 
 
 class SibmitForm(FlaskForm):
-    submit = SubmitField('Sign Up Now')
+    submit = SubmitField('Enroll')
 
 
 class SignUpForm(FlaskForm):
@@ -59,8 +59,8 @@ class SignUpForm(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(SignUpForm, self).__init__(*args, **kwargs)
-        self.courseName.choices = [(course.id, course.coursename)
-                                   for course in Course.query.order_by(Course.coursename).all()]
+        self.courseName.choices = [(course.id, course.title)
+                                   for course in Course.query.order_by(Course.title).all()]
 
 
 class EditProfileForm(FlaskForm):
@@ -116,8 +116,8 @@ class ApproveOrder(FlaskForm):
 
     def __init__(self, *args, **kwargs):
         super(ApproveOrder, self).__init__(*args, **kwargs)
-        self.courseName.choices = [(course.id, course.coursename)
-                                   for course in Course.query.order_by(Course.coursename).all()]
+        self.courseName.choices = [(course.id, course.title)
+                                   for course in Course.query.order_by(Course.title).all()]
 
 
 class PostForm(FlaskForm):

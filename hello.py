@@ -101,7 +101,7 @@ def about():
 
 @app.route('/cources')
 def cources():
-    return render_template('cources.html')
+    return render_template('courses.html')
 
 
 @app.route('/ActiveDirectoryCource', methods=['GET', 'POST'])

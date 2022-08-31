@@ -76,8 +76,25 @@ def show_followed():
 
 @main.route('/cources')
 def cources():
-    # courses = Course.query.order_by().all()
-    return render_template('cources.html')
+    courses = Course.query.order_by(Course.id).all()
+    page = request.args.get('page', 1, type=int)
+    pagination = Course.query.order_by(Course.id).paginate(
+        page, per_page=current_app.config['FLASKY_COURSES_PER_PAGE'],
+        error_out=False)
+    courses = pagination.items
+
+    return render_template('courses.html', courses=courses, pagination=pagination)
+
+
+@main.route('/cources/<int:id>', methods=['GET', 'POST'])
+def cources_description(id):
+    course = Course.query.get_or_404(id)
+    modules = course.modules.split('%')
+    print(modules)
+    form = SibmitForm()
+    if form.validate_on_submit():
+        return redirect(url_for('main.signup'))
+    return render_template('course.html', form=form, course=course, modules=modules)
 
 
 @main.route('/feedback', methods=['GET', 'POST'])
@@ -91,14 +108,6 @@ def feedback():
 @main.route('/about')
 def about():
     return render_template('about.html')
-
-
-@main.route('/ActiveDirectoryCource', methods=['GET', 'POST'])
-def ActiveDirectoryCource():
-    form = SibmitForm()
-    if form.validate_on_submit():
-        return redirect(url_for('main.signup'))
-    return render_template('ActiveDirectoryCource.html', form=form)
 
 
 @main.route('/signup', methods=['GET', 'POST'])

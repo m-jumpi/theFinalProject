@@ -1,0 +1,11 @@
+<section class="cource-section">
+    {% for course in courses %}
+    <article class="cource">
+        <div class="article-image" style="background: url(./static/img{{course.id}}.jpg);"></div>
+        <div class="cource-header">
+            <a class="cource-href" href="{{ url_for('.cources_description', id=course.id) }}">{{ course.title }}</a>
+        </div>
+        <p>{{ course.description }}</p>
+    </article>
+    {% endfor %}
+</section>

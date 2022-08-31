@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Cources{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>List of Courses</h1>
+</div>
+<main>
+    {% include '_courses.html' %}
+</main>
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.cources') }}
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}{{ course.title }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>{{ course.title }}</h1>
+</div>
+<main class="col text-center">
+    <section class="description-section">
+        <article class="cource-description cource-modiles">
+            <h5>About this cource</h5>
+            <p>{{ course.description }}</p>
+
+            <div class="cource-modiles">
+                <h5>This course is composed by the following modules</h5>
+                <ul>
+                    {% for module in modules %}
+                    <li class="module">Module</li>
+                    <ul>
+                        <li>{{ module }}</li>
+                    </ul>
+                    </br>
+                    {% endfor %}
+                </ul>
+            </div>
+        </article>
+        <article class="cource-description author cource-modiles">
+            <div class="author-image" style="background: url(../static/author1.jpeg);"></div>
+            <h5>{{ course.author_course.name }}</h5>
+            <h5>Instructor for this cource</h5>
+            <p>{{ course.author_course.about_auth }}</p>
+        </article>
+
+    </section>
+</main>
+<br/>
+<div class="col text-center">
+    {{ wtf.quick_form(form) }}
+</div>
+
+{% endblock %}

@@ -205,26 +205,54 @@ login_manager.anonymous_user = AnonymousUser
 class Course(db.Model):
     __tablename__ = 'courses'
     id = db.Column(db.Integer, primary_key=True)
-    coursename = db.Column(db.String(64), unique=True)
+    title = db.Column(db.String(64), unique=True)
+    description = db.Column(db.Text)
+    modules = db.Column(db.Text)
+    author_id = db.Column(db.Integer, db.ForeignKey('author.id'))
     orders = db.relationship('Order', backref='course_order')
 
     @staticmethod
     def insert_corses():
-        courses = ['Active Directory Protection & Tiering',
-                   'Advanced Implementation and Optimization with Border Gateway',
-                   'Advanced Network Automation with Python',
-                   'AWS Cloud Architect Bootcamp',
-                   'AWS Management Concepts',
-                   'AWS Security & Compliance']
-        for c in courses:
-            course = Course.query.filter_by(coursename=c).first()
+        courses = {'Active Directory Protection & Tiering': ["This on-demand course is intended for IT and security \
+professionals who want to understand the most common attack vectors and security pitfolds in Active Directory such as \
+Kerberoast, kerberos delegation, credential caching and others. We will discuss the best practice recommendations to \
+design a new Active Directory or protect an existing one against security threats. The course focuses on the most \
+abused escalation misconfiguration and the tools available to discover them, the Active Directory Tiering model, \
+Privileged Access Workstations, ESAE forests, and different password policies based on account categorization and \
+others.", "Introduction %Overview of AD Attacks & Tools %Attacks %Tools %AD Tiering %Passwords \
+%AD Features %Hardening %Conclusion", 1],
+                   'Advanced Implementation and Optimization with Border Gateway': ["This course covers understanding, optimizing and configuring BGP. In \
+this course, you will learn about different BGP Path attributes as well \
+as how to do path manipulation in BGP using attributes like...", "", 1],
+                   'Advanced Network Automation with Python': ["This course covers advanced Python scripting required for Network automation and \
+managing network devices. In this course, you will learn about taking backups \
+of network devices using Netmiko, Built-in function, Built-in input function, \
+SysArgv, Argparse, matching RAW data using Regex, Parsing Data using Regex, \
+and TextFSM. Students who want to deepen their understanding of Network Automation \
+using Python3 will benefit from this course", "", 1],
+                   'AWS Cloud Architect Bootcamp': ["Join us for this 12 Week AWS Cloud Architect Bootcamp and prepare for the AWS Solutions Architect \
+Associate certification by BUILDING 54 PROJECTS.", "", 1],
+                   'AWS Management Concepts': ["Understanding AWS is more than just services. It's also about best practices when it comes to billing, \
+architectures, monitoring, and so on. This course will cover the fundamentals needed to become effective \
+in those areas. We will look at support plans, cost and billing, as well as the Well-Architected \
+framework. When completed, you will have a solid foundation to begin building, monitoring, and \
+controlling costs in AWS.", "", 1],
+                   'AWS Security & Compliance': ["AWS is not only a game-changer for companies looking to innovate faster. AWS Cloud also helps you \
+significantly improve your security and compliance practice in ways that would be difficult or \
+financially impossible for most organizations outside AWS. This course gives you the fundamentals for \
+understanding security and compliance in the AWS Cloud. You will review the basics of security using \
+IAM, including entities and evaluation of policy statements. The essential services you can use to \
+improve security and compliance, including those using AI/ML, are also covered.", "", 1]
+                   }
+        for key, value in courses.items():
+            course = Course.query.filter_by(title=key).first()
             if course is None:
-                course = Course(coursename=c)
+                course = Course(title=key, description=value[0], modules=value[1], author_id=value[2])
                 db.session.add(course)
         db.session.commit()
 
     def __repr__(self):
-        return self.coursename
+        return self.title
 
 
 class Order(db.Model):
@@ -242,6 +270,36 @@ class Order(db.Model):
 
     def __repr__(self):
         return '<Order %r>' % self.id
+
+
+class Author(db.Model):
+    __tablename__ = 'author'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    about_auth = db.Column(db.Text)
+    courses = db.relationship('Course', backref='author_course')
+
+    @staticmethod
+    def insert_authors():
+        authors = {'Ivanov Ivan': "Ivan has specialized in both offensive and defensive security. \
+On the offensive side, he has performed numerous Red Team engagements and penetration tests, \
+targeting both Active Directory, web and network infrastructures, and applications. Ivan has also been part of \
+multiple full TIBER-DK engagements executed in Denmark. On the defensive side, he has specialized in improving Cyber \
+Security maturity and resilience against modern attacks in Active Directory and related Windows \
+infrastructure. His previous roles include Senior Consultant, where he handled Digital Forensics and Incident Response, \
+Vulnerability Management, IP Theft Investigations, and more. He later transitioned to Senior IT Security Researcher \
+where he focused on developing Information Security courses. This role was followed by working as a Security Advisor \
+where he handled Network Security, SecOps Management, Web Application Security, Critical Security Controls, and more. \
+Certifications: eCTHP, eCPTX, OSCE, OSCP, GCFA, AZ-500, Microsoft INF260x"}
+        for key, value in authors.items():
+            author = Author.query.filter_by(name=key).first()
+            if author is None:
+                author = Author(name=key, about_auth=value)
+                db.session.add(author)
+        db.session.commit()
+
+    def __repr__(self):
+        return '<Author %r>' % self.id
 
 
 class Permission:
