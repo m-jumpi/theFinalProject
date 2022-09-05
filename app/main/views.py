@@ -101,7 +101,11 @@ def cources_description(id):
 def feedback():
     form = FeedbackForm()
     if form.validate_on_submit():
-        flash('Form is valid')
+        send_email(current_app.config['FLASKY_ADMIN'], 'Feedback',
+                   '/email/feedback', firstName=form.firstName.data, lastName=form.lastName.data, email=form.email.data,
+                   feedbackText=form.feedbackText.data, coursename=Course.query.get(form.courseName.data))
+        flash('Thank you for your feedback')
+        return redirect(url_for('main.index'))
     return render_template('feedback.html', form=form)
 
 

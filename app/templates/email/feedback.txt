@@ -1,0 +1,11 @@
+Dear Admin,
+
+User {{ firstName }} {{ lastName }} left a feedback about the course {{ coursename }}
+
+-------
+{{ feedbackText }}
+-------
+
+Sincerely,
+
+The L|T|S Team
